@@ -143,6 +143,9 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .eq i:nth-child(2){animation-delay:.25s} .eq i:nth-child(3){animation-delay:.5s} .eq i:nth-child(4){animation-delay:.12s}
 @keyframes eq{0%{height:3px}100%{height:14px}}
 
+/* PNG 저장 때 글씨 폭이 미세하게 달라져도 줄이 바뀌지 않게 */
+.mood .chip,.fake-in b,.fake-in em,.count,.count b,.tabs span,.boxh,.surf span,.scene .tag,.player .tm,.lab,.gb-h .no,.gb-h .au,.gb-h .rel,.gb-h .tm,.gb-h .new,.reply .rn,.ilist li .w,.friends b,.polaroid .cap,.rhead .url,.btn{white-space:nowrap}
+.fake-in b{flex-shrink:0}
 /* 계절 풍경 (도트 그림) */
 .scene{position:relative;aspect-ratio:200/90;min-height:150px;border-radius:10px;overflow:hidden;border:2px solid rgba(0,0,0,.12);background-color:#cfe6fa;background-size:cover;background-position:center bottom;image-rendering:pixelated;image-rendering:crisp-edges}
 .scene.custom{image-rendering:auto}
