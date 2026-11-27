@@ -114,7 +114,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .friends li{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed #eee;font-size:12px}
 .friends li:last-child{border-bottom:none}
 .friends .d{width:20px;height:20px;border-radius:50%;background:var(--mc);color:#fff;font-family:var(--px);font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.friends .d.e{background:none;font-size:16px}
+.friends .d.e{background:none;font-size:15px}
 .friends b{font-weight:700;color:#333;white-space:nowrap}
 .friends span{color:#999;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .surf{margin-top:auto;font-family:var(--px9);font-size:11px;color:#666;display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #ddd;border-radius:6px;padding:7px 10px}
@@ -143,6 +143,8 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .eq i:nth-child(2){animation-delay:.25s} .eq i:nth-child(3){animation-delay:.5s} .eq i:nth-child(4){animation-delay:.12s}
 @keyframes eq{0%{height:3px}100%{height:14px}}
 
+ /* 이모지는 OS마다 그리는 글꼴이 달라서, 이모지 글꼴 기준으로 줄 높이를 잡아 가운데에 오게 해요 */
+.photo,.friends .d.e,.mini.e span,.logo i,.seg2 .em{font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Twemoji Mozilla',sans-serif;line-height:1;font-weight:400;font-variant-emoji:emoji;text-align:center}
 /* PNG 저장 때 글씨 폭이 미세하게 달라져도 줄이 바뀌지 않게 */
 .mood .chip,.fake-in b,.fake-in em,.count,.count b,.tabs span,.boxh,.surf span,.scene .tag,.player .tm,.lab,.gb-h .no,.gb-h .au,.gb-h .rel,.gb-h .tm,.gb-h .new,.reply .rn,.ilist li .w,.friends b,.polaroid .cap,.rhead .url,.btn{white-space:nowrap}
 .fake-in b{flex-shrink:0}
@@ -195,7 +197,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .gb-b{display:grid;grid-template-columns:62px 1fr;gap:12px;padding:12px 12px 10px 11px}
 .mini{width:62px;height:62px;border-radius:8px;border:1.5px dashed #ddd;background:#fbfbfb;display:flex;align-items:center;justify-content:center;position:relative}
 .mini span{width:40px;height:40px;border-radius:50%;background:var(--mc);display:flex;align-items:center;justify-content:center;font-family:var(--px);font-weight:700;color:#fff;font-size:16px;box-shadow:0 3px 0 rgba(0,0,0,.1)}
-.mini.e span{background:none;box-shadow:none;font-size:34px}
+.mini.e span{background:none;box-shadow:none;font-size:32px;width:44px;height:44px}
 .gb-t{font-size:13px;line-height:1.75;word-break:keep-all;white-space:pre-wrap;padding-top:2px;color:#333}
 .reply{margin:0 12px 11px 85px;background:#f8f9fb;border-left:3px solid var(--c);border-radius:0 6px 6px 0;padding:6px 10px;font-size:12px;line-height:1.6;display:flex;gap:6px}
 .reply .rn{font-weight:700;color:var(--cd);white-space:nowrap}
