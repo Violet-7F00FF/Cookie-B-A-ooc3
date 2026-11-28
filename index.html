@@ -321,7 +321,7 @@ BGM: 제목 - 가수
         <h3>AI의 답변을 그대로 붙여 넣으세요</h3>
         <p>&lt;&lt;미니홈피&gt;&gt;부터 &lt;&lt;끝&gt;&gt;까지 넣으면 돼요. 앞뒤에 다른 말이 섞여도 괜찮아요.</p>
         <textarea id="input" spellcheck="false" placeholder="<<미니홈피>>&#10;[PC]&#10;이름: ...&#10;..."></textarea>
-        <div class="btns"><button class="btn primary" id="go">미니홈피 열기</button></div>
+        <div class="btns"><button class="btn primary" id="go">미니홈피 열기</button><button class="btn" id="clearIn">입력 지우기</button></div>
         <div class="err" id="err"></div>
       </div>
     </div>
@@ -385,7 +385,7 @@ async function copy(text){
   catch{ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
 }
 function normHex(v){
-  const m = String(v||'').match(/#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})(?![0-9a-fA-F])/);
+  const m = String(v||'').match(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})(?![0-9a-zA-Z])/) || String(v||'').match(/(?:^|[\s|,(])([0-9a-fA-F]{6})(?![0-9a-zA-Z])/);
   if(!m) return null;
   let h = m[1]; if(h.length===3) h = h.split('').map(c=>c+c).join('');
   return '#'+h.toLowerCase();
@@ -959,7 +959,19 @@ async function savePNG(){
   try{
     if(document.fonts && document.fonts.ready) await document.fonts.ready;
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    // 두 사람 홈피 PNG가 같은 크기로 나오도록, 상대 홈피 높이도 재서 더 긴 쪽에 맞춰요
     const node = $('#stage');
+    const myBook = node.querySelector('.book');
+    myBook.style.minHeight = '';
+    const ghost = document.createElement('div');
+    ghost.style.cssText = 'position:absolute;left:-100000px;top:0;visibility:hidden;pointer-events:none';
+    ghost.innerHTML = homeHTML(showing==='pc' ? 'npc' : 'pc');
+    $('#view').appendChild(ghost);
+    await new Promise(r=>requestAnimationFrame(r));
+    const otherBookH = ghost.querySelector('.book').offsetHeight;
+    ghost.remove();
+    if(otherBookH > myBook.offsetHeight) myBook.style.minHeight = otherBookH + 'px';
+    await new Promise(r=>requestAnimationFrame(r));
     const opt = {pixelRatio:2, backgroundColor:'#ffffff', width:node.offsetWidth, height:node.offsetHeight};
     // 사파리는 첫 번째 그림에서 이미지가 빠지는 경우가 있어 한 번 더 그려요
     if(/^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent)) await htmlToImage.toPng(node, opt);
@@ -970,7 +982,7 @@ async function savePNG(){
     document.body.appendChild(a); a.click(); a.remove();
     toast('PNG로 저장했어요');
   }catch(e){ console.error(e); toast('저장에 실패했어요. 다시 시도해 주세요'); }
-  finally{ root.classList.remove('capture','final'); btn.disabled = false; btn.textContent = 'PNG로 저장'; }
+  finally{ const bk = document.querySelector('#stage .book'); if(bk) bk.style.minHeight = ''; root.classList.remove('capture','final'); btn.disabled = false; btn.textContent = 'PNG로 저장'; }
 }
 
 /* ───────── OOC (NPC 지정) ───────── */
@@ -1047,6 +1059,13 @@ function openCropper(src, key){
 $('#npcName').addEventListener('input', ()=>{ $('#oocText').textContent = buildOOC(); try{ localStorage.setItem('mh-npc', $('#npcName').value); }catch{} });
 $('#copyOoc').onclick = async()=>{ await copy(buildOOC()); const n=$('#npcName').value.trim(); toast(n ? `${n} 지정 OOC를 복사했어요` : 'OOC를 복사했어요'); };
 $("#go").onclick = ()=>openHome($("#input").value);
+$('#clearIn').onclick = ()=>{
+  const ta = $('#input');
+  if(!ta.value.trim()){ toast('이미 비어 있어요'); return; }
+  ta.value = ''; $('#err').textContent = '';
+  try{ localStorage.removeItem('mh-last'); }catch{}
+  ta.focus(); toast('입력을 지웠어요');
+};
 $('#back').onclick = ()=>{ timers.forEach(clearTimeout); document.body.classList.remove('viewing'); $('#viewWrap').hidden = true; $('#intake').hidden = false; window.scrollTo(0,0); };
 $('#png').onclick = savePNG;
 document.querySelectorAll('#seg button').forEach(b=>b.onclick = ()=>{ show(b.dataset.who); syncSeason(); });
